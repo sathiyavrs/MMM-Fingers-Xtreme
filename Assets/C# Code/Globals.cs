@@ -39,7 +39,7 @@
         GameScore = 0;
         SlowMotionRatio = 0.3f;
         HasBeenInitialized = true;
-        DebugMode = false;
+        DebugMode = true;
     }
 }
 
