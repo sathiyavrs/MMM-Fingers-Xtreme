@@ -19,6 +19,8 @@ public class MouseController : MonoBehaviour
         if (Globals.GameOver)
             return;
 
+        Globals.Update(Time.deltaTime);
+
         ComputeMousePosition();
         ClickListener();
 
@@ -31,7 +33,14 @@ public class MouseController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Globals.SlowMotion = !Globals.SlowMotion;
+            if(Globals.SlowMotion)
+            {
+                Globals.SetSlowMotionFalse();
+            } 
+            else
+            {
+                Globals.SetSlowMotionTrue();
+            }
         }
 
     }

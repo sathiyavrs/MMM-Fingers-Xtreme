@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>WebGL:20</UnityBuildTarget>
     <UnityVersion>5.2.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -71,14 +73,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\C# Code\AlphaLevelGenerator.cs" />
     <Compile Include="Assets\C# Code\CustomResources.cs" />
     <Compile Include="Assets\C# Code\EnemyIdentifier.cs" />
     <Compile Include="Assets\C# Code\Globals.cs" />
     <Compile Include="Assets\C# Code\LevelGenerator.cs" />
+    <Compile Include="Assets\C# Code\MagicBoxHandler.cs" />
+    <Compile Include="Assets\C# Code\MagicCircleHandler.cs" />
     <Compile Include="Assets\C# Code\MouseController.cs" />
+    <Compile Include="Assets\C# Code\LeapController.cs" />
     <Compile Include="Assets\C# Code\PlayerController.cs" />
     <Compile Include="Assets\C# Code\PlayerIdentifier.cs" />
     <Compile Include="Assets\C# Code\PulsationHandler.cs" />
+    <Compile Include="Assets\C# Code\SlowMotionBar.cs" />
     <Compile Include="Assets\C# Code\TextureFlicker.cs" />
     <Compile Include="Assets\C# Code\TriggerHandler.cs" />
     <Compile Include="Assets\C# Code\VibrationHandler.cs" />

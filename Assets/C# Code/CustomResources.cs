@@ -24,4 +24,31 @@
         if (!Globals.HasBeenInitialized)
             Globals.Initialize();
     } 
+
+    public struct SlowMotionData
+    {
+        public float Current;
+        public float MaxTime { get; set; }
+        public float IncrementRate { get; set; }
+        public float DecrementRate { get; set; }
+        public float PercentageRequiredToStart { get; set; }
+    }
+
+    public enum AlphaGeneratorState
+    {
+        Generating,
+        Waiting
+    }
+
+    public enum Generation
+    {
+        BasicGreenStraightTwo,
+        BasicGreenStraightThree,
+        BasicGreenThreeLine,
+        BasicGreenTwoLineOne,
+        BasicGreenTwoLineTwo,
+
+
+    }
+
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public GameObject Enemy;
+    public List<GameObject> Enemies;
     public BoxCollider2D Bounds;
     public float LevelSpeed;
     public float SpawnDistance;
@@ -30,7 +30,7 @@ public class LevelGenerator : MonoBehaviour
 
         UpdateDistance();
         UpdateSpawnNumber();
-        UpdateEnemies();    
+        UpdateEnemies();
     }
 
     private void UpdateSpawnNumber()
@@ -131,8 +131,17 @@ public class LevelGenerator : MonoBehaviour
             var position = new Vector2(Random.Range(spawnMinX, spawnMaxX), spawnY);
             var rotation = new Quaternion();
 
-            var enemy = (GameObject)Instantiate(Enemy, position, rotation);
+            var enemyPrefab = Enemies[(int)Random.Range(0, Enemies.Count)];
+
+            var enemy = (GameObject)Instantiate(enemyPrefab, position, rotation);
             _enemies.Add(enemy);
+
+            var circleHandler = enemy.GetComponent<MagicCircleHandler>();
+            if (circleHandler == null)
+                continue;
+
+            circleHandler.Clockwise = (Random.Range(0, 1) > 0.5f) ? true : false;
+            enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y + Random.Range(0, 5), enemy.transform.position.z);
         }
     }
 
@@ -156,9 +165,9 @@ public class LevelGenerator : MonoBehaviour
 
         var _toDelete = new List<GameObject>();
 
-        foreach(GameObject enemy in _enemies)
+        foreach (GameObject enemy in _enemies)
         {
-            if(enemy.transform.position.y < lowerY)
+            if (enemy.transform.position.y < lowerY)
             {
                 _toDelete.Add(enemy);
             }
