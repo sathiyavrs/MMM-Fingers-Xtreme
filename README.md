@@ -22,3 +22,7 @@ Run the .exe file or use the WebGL build version.
 Note that the WebGL version is built with Unity's preview build. Lots of errors possible.
 
 Look at Development Notes for more.
+
+# Contributors
+- [sathiyavrs](https://github.com/sathiyavrs) - Me
+- [Suyash458](https://github.com/Suyash458)  - Suyash Behera
