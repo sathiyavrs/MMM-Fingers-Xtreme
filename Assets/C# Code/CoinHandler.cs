@@ -21,6 +21,9 @@ public class CoinHandler : MonoBehaviour
         if (transform.localScale.x < 0.001f)
         {
             Globals.GameScore += PointsToAdd;
+            Globals.ScoreIncrement += PointsToAdd;
+            Globals.StarCollected = true;
+            Globals.StarReward = PointsToAdd;
             Destroy(gameObject);
         }
     }

@@ -40,11 +40,12 @@ public class AlphaLevelGenerator : MonoBehaviour
     private bool _hasStarted;
     private float _generationDistanceCovered;
     private float _coinDistanceCovered;
+    private float _gameStartTimeLeft;
 
     public void Start()
     {
         _enemies = new List<GameObject>();
-        _coins = new List<GameObject>();    
+        _coins = new List<GameObject>();
         _state = CustomResources.AlphaGeneratorState.Waiting;
         _waitDistanceCovered = 0;
         Globals.GameSpeed = InitialGameSpeed;
@@ -52,6 +53,7 @@ public class AlphaLevelGenerator : MonoBehaviour
         _hasStarted = false;
         _generationDistanceCovered = 0f;
         _coinDistanceCovered = 0f;
+        _gameStartTimeLeft = Globals.GameStartTime;
 
         InitializeGenerationList();
         CalculateSpawnY();
@@ -140,10 +142,61 @@ public class AlphaLevelGenerator : MonoBehaviour
         _generationList.Add(CustomResources.Generation.CircleGreenOne);
     }
 
+    private void GameStart()
+    {
+        _gameStartTimeLeft -= Time.deltaTime * Globals.GlobalRatio;
+        if (_gameStartTimeLeft <= 0)
+        {
+            Globals.GameStarting = false;
+        }
+    }
+
+    private void RestartListener()
+    {
+        if (Input.GetKey(KeyCode.R))
+        {
+            if (Globals.GameOver)
+            {
+                Restart();
+            }
+
+        }
+    }
+
+    private void Restart()
+    {
+        var toDelete = new List<GameObject>();
+
+        foreach (GameObject enemy in _enemies)
+        {
+            toDelete.Add(enemy);
+        }
+
+        foreach (GameObject coin in _coins)
+            toDelete.Add(coin);
+
+        foreach (GameObject obj in toDelete)
+        {
+            Destroy(obj);
+        }
+
+        Start();
+        Globals.Initialize();
+        Globals.GameStarting = true;
+    }
+
     public void Update()
     {
+        RestartListener();
+
         if (Globals.GameOver)
             return;
+
+        if (Globals.GameStarting)
+        {
+            GameStart();
+            return;
+        }
 
         if (Globals.GameSpeed == 0)
             Globals.GameSpeed = InitialGameSpeed;
@@ -171,12 +224,19 @@ public class AlphaLevelGenerator : MonoBehaviour
 
     private void UpdateScore()
     {
+        ScoreMinIncrement += Time.deltaTime * Globals.GlobalRatio * Globals.GameSpeed / 100;
+        ScoreMaxIncrement += Time.deltaTime * Globals.GlobalRatio * Globals.GameSpeed / 100;
+
+
         var playerY = Player.transform.position.y;
-        var normalizedPlayerY = (playerY - _destroyY) / _spawnY - _destroyY;
+        var normalizedPlayerY = (playerY - _destroyY) / (_spawnY - _destroyY);
         var scoreIncrement = normalizedPlayerY * (ScoreMaxIncrement - ScoreMinIncrement) + ScoreMinIncrement;
+
+        // Debug.Log(_spawnY - _destroyY);
 
         var deltaScore = scoreIncrement * Time.deltaTime * Globals.GlobalRatio;
         Globals.GameScore += deltaScore;
+        Globals.ScoreIncrement += deltaScore;
         // Debug.Log((int)Globals.GameScore);
     }
 
@@ -203,7 +263,7 @@ public class AlphaLevelGenerator : MonoBehaviour
             coin.transform.position = new Vector3(coin.transform.position.x, coin.transform.position.y + deltaY, coin.transform.position.z);
         }
 
-        foreach(GameObject coin in toDelete)
+        foreach (GameObject coin in toDelete)
         {
             _coins.Remove(coin);
         }
@@ -241,7 +301,7 @@ public class AlphaLevelGenerator : MonoBehaviour
             }
         }
 
-        foreach(GameObject coin in toDelete)
+        foreach (GameObject coin in toDelete)
         {
             _coins.Remove(coin);
             Destroy(coin);
@@ -265,6 +325,8 @@ public class AlphaLevelGenerator : MonoBehaviour
 
     private void UpdateEnemies()
     {
+
+
         var toDelete = new List<GameObject>();
         var deltaY = Time.deltaTime * Globals.GameSpeed * Globals.GlobalRatio * -1;
 

@@ -15,7 +15,8 @@ public static class Globals
         }
         set
         {
-            _gameOver = value;
+            if (!GameStarting)
+                _gameOver = value;
         }
     }
 
@@ -28,6 +29,7 @@ public static class Globals
 
     public static CustomResources.SlowMotionData SlowMotionTimeData;
 
+    public static bool GameStarting = true;
 
     public static float GlobalRatio
     {
@@ -38,6 +40,7 @@ public static class Globals
     }
 
     private static bool _gameOver;
+    public static float GameStartTime = 5f;
 
     public static void Initialize()
     {
@@ -51,6 +54,12 @@ public static class Globals
         Direction = Vector2.down;
         GameSpeed = 0;
         LivesRemaining = 5;
+        GameStarting = true;
+        ScoreIncrement = 0;
+        LivesIncremented = false;
+        RewardScore = 100;
+        StarCollected = false;
+        StarReward = 0;
     }
 
     public static void InitializeSlowMotion()
@@ -66,6 +75,23 @@ public static class Globals
     public static void Update(float dt)
     {
         UpdateSlowMotion(dt);
+        UpdateLivesRemaining();
+    }
+
+    public static float ScoreIncrement;
+    public static bool LivesIncremented;
+    public static float RewardScore;
+    public static bool StarCollected;
+    public static float StarReward;
+
+    private static void UpdateLivesRemaining()
+    {
+        if(ScoreIncrement > RewardScore)
+        {
+            LivesRemaining++;
+            LivesIncremented = true;
+            ScoreIncrement = 0;
+        }
     }
 
     private static void UpdateSlowMotion(float dt)
