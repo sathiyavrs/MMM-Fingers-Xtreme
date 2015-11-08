@@ -17,11 +17,11 @@ Loading D:\Unity Projects\MMM Fingers Extreme\Game_Data\Managed\UnityEngine.Netw
 Platform assembly: D:\Unity Projects\MMM Fingers Extreme\Game_Data\Managed\LeapCSharp.NET3.5.dll (this message is harmless)
 Loading D:\Unity Projects\MMM Fingers Extreme\Game_Data\Managed\LeapCSharp.NET3.5.dll into Unity Child Domain
 Platform assembly: D:\Unity Projects\MMM Fingers Extreme\Game_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.210 seconds
+- Completed reload, in  0.202 seconds
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
 Platform assembly: D:\Unity Projects\MMM Fingers Extreme\Game_Data\Managed\System.dll (this message is harmless)
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 1d40 -> priority: 1 
+  Thread -> id: 1858 -> priority: 1 

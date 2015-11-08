@@ -1,4 +1,102 @@
-﻿using UnityEngine;
+﻿/*
+    
+    Documentation:
+
+    Let me first give a basic idea of how this Generator works:
+
+    The generator has two stages, the Waiting stage, and the Generating stage.
+    This is governed by the _state private field of type 'CustomResources.AlphaGeneratorState'.
+
+    Note that the downward movement of enemies is not governed by these stages. 
+    That happens automatically all the time.
+
+    Let me discuss the 'Generating' state first. 
+
+    The aim of this generator is to generate 'Structures of Blocks'. 
+    Each structure is a set of blocks the player must navigate through to survive.
+    Each structure is different from each other.
+
+    To do that, this script generates a 'CustomResources.Generation' called _itemGenerating.
+    This value uniquely identifies one of several possible structure designed by the developer.
+
+    After identifying one possible value for _itemGenerating, the script calls a initiates a CoRoutine.
+    This Coroutine will essentially halt the execution of the Update() method until it is finished.
+
+    As soon as the CoRoutine yields, it sets a bunch of variables telling the Script to go to Waiting stage.
+    
+    Now, the waiting stage simply does nothing but move all the enemies forward, until a certain distance is covered.
+    This distance is based on the value of _itemGenerating, ie, the more complex the item generated, the more the waiting time.
+    
+    As soon as the waiting's done, the game moves back to the Generating Stage.
+
+    ***
+
+    Now, I'll be discussing all the public properties I've defined in my script. 
+    I'll go over them one by one.
+
+    * GreenEnemy - Coins represent prefabs for those items.
+    * Bounds represents the bounds of the map. This value is mainly used for Computations for Level Generation.
+    * Player represents the player object the game uses.
+    
+    Before I describe the next three properties, let me describe the types of structures I've defined.
+
+    There are three types: Basic, TierOne, TierTwo.
+
+    Basic represents the basic combinations of the GreenEnemy Type alone. This enemy type doesn't move around much.
+    It vibrates a bit and mainly just moves down. The basic enemy type, if you will.
+
+    TierOne includes the BoxEnemy. This enemy defines a BoxCollider2D object within it as a bounds, and
+    generates points within it as target points. It then moves towards those target points. Once it reaches
+    a target point, it moves to square one.
+    TierOne represents several combinations including the Basic Green Enemy type and the BoxEnemy type.
+
+    TierTwo includes the CircleEnemy. This enemy moves in a spiral around a min and Max Radius values around a center.
+    They can move either in clockwise or anticlockwise directions.
+    Naturally, we simply move the center down.
+    TierTwo inclues combinations of all enemy types.
+
+    * BasicWait represents the distance that must be covered when a TierOne structure had just been generated.
+    * This distance will be covered in the Waiting State of this script.
+    *
+    * BoxWait represents the distance that must be covered when a TierTwo structure had just been generated.
+    * This distance will be covered in the Waiting State of this script.
+    *
+    * CircleWait represents the distance that must be covered when a TierThree structure had just been generated.
+    * This distance will be covered in the Waiting State of this script.
+
+    You can increase these values to make the game a bit easier.
+    
+    * InitialGameSpeed represents the Speed which is set to 'Globals.GameSpeed'. Look that up for more info.
+    * MaxGameSpeed represents the max value 'Globals.GameSpeed' can achieve.
+    * GameAcceleration represents the acceleration value for 'Globals.GameSpeed'
+
+    The next three values (Basic, Box and Circle Generation) deal with the internals of working within 
+    the structure generation. Do not change them unless you're really sure what you're doing.
+
+    TODO: Document the meanings of Basic, Box and Circle Generation.
+
+    * TierTwoSpeed represents the value of Globals.GameSpeed at which the game starts generating TierTwo enemies.
+    * TierThreeSpeed represents the value of Globals.GameSpeed at which the game starts generating TierThree enemies.
+    
+    Okay. A quick heads-up of how coins work.
+    They essentially add to the number of points the player gets, through the PointsToAdd field on the CoinHandler 
+    script. But, on contact with an enemy block, they're destroyed.
+    I did this to allow me to generate coins and enemies separately to ease my design process.
+    A mistake I'll probably regret in the future.
+
+    * CoinDistance represents the distance that has to be covered by the GameSpeed for coins to be generated.
+    
+    The rate at which idle scoring is incremented is based on the player's Y value. 
+    If the player is situated at a higher y value, the scoring is faster.
+
+    * ScoreMaxIncrement represents the value with which the score increases if the player's at the top of the screen.
+    * ScoreMinIncrement represents the value with which the score increases if the player's at the bottom of the screen.
+
+    This should provide all the documentation needed to modify the LevelGenerator's parameters.
+*/
+
+
+using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
@@ -10,17 +108,22 @@ public class AlphaLevelGenerator : MonoBehaviour
     public GameObject Coins;
     public BoxCollider2D Bounds;
     public GameObject Player;
+
     public float BasicWait = 10f;
     public float BoxWait = 10f;
     public float CircleWait = 10f;
 
     public float InitialGameSpeed = 5f;
+    public float MaxGameSpeed = 7f;
     public float GameAcceleration = 0f;
+
     public float BasicGeneration = 1.4f;
     public float BoxGeneration = 1.5f;
     public float CircleGeneration = 1.2f;
+
     public float TierTwoSpeed = 6f;
     public float TierThreeSpeed = 7f;
+
     public float CoinDistance = 6f;
 
     public float ScoreMaxIncrement = 10f;
@@ -42,6 +145,9 @@ public class AlphaLevelGenerator : MonoBehaviour
     private float _coinDistanceCovered;
     private float _gameStartTimeLeft;
 
+    private float _initialScoreMin;
+    private float _initialScoreMax;
+
     public void Start()
     {
         _enemies = new List<GameObject>();
@@ -54,6 +160,8 @@ public class AlphaLevelGenerator : MonoBehaviour
         _generationDistanceCovered = 0f;
         _coinDistanceCovered = 0f;
         _gameStartTimeLeft = Globals.GameStartTime;
+        _initialScoreMax = ScoreMaxIncrement;
+        _initialScoreMin = ScoreMinIncrement;
 
         InitializeGenerationList();
         CalculateSpawnY();
@@ -180,6 +288,9 @@ public class AlphaLevelGenerator : MonoBehaviour
             Destroy(obj);
         }
 
+        ScoreMinIncrement = _initialScoreMin;
+        ScoreMaxIncrement = _initialScoreMax;
+
         Start();
         Globals.Initialize();
         Globals.GameStarting = true;
@@ -202,6 +313,10 @@ public class AlphaLevelGenerator : MonoBehaviour
             Globals.GameSpeed = InitialGameSpeed;
 
         Globals.GameSpeed += GameAcceleration * Time.deltaTime * Globals.GlobalRatio;
+        if(Globals.GameSpeed > MaxGameSpeed)
+        {
+            Globals.GameSpeed = MaxGameSpeed;
+        }
 
         switch (_state)
         {

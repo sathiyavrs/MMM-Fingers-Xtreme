@@ -12,3 +12,23 @@ I'll add more as I need them.
 The player need's two controllers during development: A Leap Motion Hand Controller and a Mouse Controller. Separated by a PlayerController script.
 
 There's a debug Mode in the Globals that should not be set outside. Set initially to false when shipping the game.
+
+***
+
+Game Loop So far:
+
+* The Player finds himself a safe spot, where he doesn't need to move, until he notices an obstacle blocking his path.
+* He then slows time down to navigate the obstacle, to move back to  step one.
+
+Lets look at why he does that.
+
+* The enemies move in a completely random way. He isn't notified of the way the enemies move in. The move patterns, the speed, and all that stuff.
+* Since he can't predict the paths of the enemies, his best bet is to find a safe spot and stick to it, only moving out of it whenever necessary.
+
+The objective game loop, however, entails the person using time to analyse the path ahead of him and to figure out what he needs to do to navigate that area.
+
+I think just simply not making the game faster as time progresses will give the player an incentive to plan and collect the coins.
+
+However, that still doesn't force the player to move. As in, the puzzles are still simple enough not to involve any player movement to solve them.
+
+This is however, due to the randomness of the game, of the levels, and so on at this point. I should be able to solve it when I get back to this and focus on recreating the game.
