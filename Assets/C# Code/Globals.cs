@@ -47,7 +47,7 @@ public static class Globals
         GameScore = 0;
         SlowMotionRatio = 0.3f;
         HasBeenInitialized = true;
-        DebugMode = true;
+        DebugMode = false;
         Direction = Vector2.down;
         GameSpeed = 0;
     }

@@ -48,7 +48,16 @@
         BasicGreenTwoLineOne,
         BasicGreenTwoLineTwo,
 
+        BlueTwo,
+        BlueThree,
+        BlueOne,
+        
+        GreenBlueOne,
+        GreenBlueTwo,
+        GreenBlueThree,
 
+        CircleOne,
+        CircleTwo
     }
 
 }
