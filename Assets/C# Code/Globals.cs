@@ -20,7 +20,7 @@ public static class Globals
     }
 
     public static bool SlowMotion { get; private set; }
-    public static int GameScore { get; set; }
+    public static float GameScore { get; set; }
     public static float SlowMotionRatio { get; set; }
     public static bool HasBeenInitialized { get; private set; }
     public static bool DebugMode { get; private set; }
@@ -50,6 +50,7 @@ public static class Globals
         DebugMode = false;
         Direction = Vector2.down;
         GameSpeed = 0;
+        LivesRemaining = 5;
     }
 
     public static void InitializeSlowMotion()
@@ -96,6 +97,7 @@ public static class Globals
     }
 
     public static float GameSpeed;
+    public static int LivesRemaining = 5;
 
 
     public static void SetSlowMotionTrue()

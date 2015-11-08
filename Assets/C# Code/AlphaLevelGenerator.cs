@@ -7,7 +7,9 @@ public class AlphaLevelGenerator : MonoBehaviour
     public GameObject GreenEnemy;
     public GameObject BoxEnemy;
     public GameObject CircleEnemy;
+    public GameObject Coins;
     public BoxCollider2D Bounds;
+    public GameObject Player;
     public float BasicWait = 10f;
     public float BoxWait = 10f;
     public float CircleWait = 10f;
@@ -19,8 +21,13 @@ public class AlphaLevelGenerator : MonoBehaviour
     public float CircleGeneration = 1.2f;
     public float TierTwoSpeed = 6f;
     public float TierThreeSpeed = 7f;
+    public float CoinDistance = 6f;
+
+    public float ScoreMaxIncrement = 10f;
+    public float ScoreMinIncrement = 5f;
 
     private List<GameObject> _enemies;
+    private List<GameObject> _coins;
     private CustomResources.AlphaGeneratorState _state;
     private CustomResources.Generation _itemGenerating;
     private float _waitDistanceCovered;
@@ -32,16 +39,19 @@ public class AlphaLevelGenerator : MonoBehaviour
     private float _rightEdge;
     private bool _hasStarted;
     private float _generationDistanceCovered;
+    private float _coinDistanceCovered;
 
     public void Start()
     {
         _enemies = new List<GameObject>();
+        _coins = new List<GameObject>();    
         _state = CustomResources.AlphaGeneratorState.Waiting;
         _waitDistanceCovered = 0;
         Globals.GameSpeed = InitialGameSpeed;
         _isGenerating = false;
         _hasStarted = false;
         _generationDistanceCovered = 0f;
+        _coinDistanceCovered = 0f;
 
         InitializeGenerationList();
         CalculateSpawnY();
@@ -126,6 +136,8 @@ public class AlphaLevelGenerator : MonoBehaviour
 
         _generationList.Add(CustomResources.Generation.CircleOne);
         _generationList.Add(CustomResources.Generation.CircleTwo);
+        _generationList.Add(CustomResources.Generation.CircleBlueOne);
+        _generationList.Add(CustomResources.Generation.CircleGreenOne);
     }
 
     public void Update()
@@ -150,16 +162,93 @@ public class AlphaLevelGenerator : MonoBehaviour
                 UpdateGenerating();
                 break;
         }
-        // Debug.Log(_itemGenerating);
-
-        if (_itemGenerating == CustomResources.Generation.BasicGreenStraightThree)
-        {
-            // Debug.Log(_state + "1");
-        }
 
         UpdateEnemies();
         UpdateGenerationInitialization();
+        UpdateCoins();
+        UpdateScore();
     }
+
+    private void UpdateScore()
+    {
+        var playerY = Player.transform.position.y;
+        var normalizedPlayerY = (playerY - _destroyY) / _spawnY - _destroyY;
+        var scoreIncrement = normalizedPlayerY * (ScoreMaxIncrement - ScoreMinIncrement) + ScoreMinIncrement;
+
+        var deltaScore = scoreIncrement * Time.deltaTime * Globals.GlobalRatio;
+        Globals.GameScore += deltaScore;
+        // Debug.Log((int)Globals.GameScore);
+    }
+
+    private void UpdateCoins()
+    {
+        UpdateAddCoins();
+        UpdateMoveCoins();
+        UpdateDeleteCoins();
+    }
+
+    private void UpdateMoveCoins()
+    {
+        var deltaY = -1 * Time.deltaTime * Globals.GlobalRatio * Globals.GameSpeed;
+        var toDelete = new List<GameObject>();
+
+        foreach (GameObject coin in _coins)
+        {
+            if (coin == null)
+            {
+                toDelete.Add(coin);
+                continue;
+            }
+
+            coin.transform.position = new Vector3(coin.transform.position.x, coin.transform.position.y + deltaY, coin.transform.position.z);
+        }
+
+        foreach(GameObject coin in toDelete)
+        {
+            _coins.Remove(coin);
+        }
+    }
+
+    private void UpdateAddCoins()
+    {
+        _coinDistanceCovered += Time.deltaTime * Globals.GlobalRatio * Globals.GameSpeed;
+
+        if (_coinDistanceCovered < CoinDistance)
+            return;
+
+        _coinDistanceCovered = 0;
+
+        var number = (int)Random.Range(1, 4);
+        var position = new Vector2(0, _spawnY);
+
+        while (number-- > 0)
+        {
+            position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+            var coin = (GameObject)Instantiate(Coins, position, new Quaternion());
+            _coins.Add(coin);
+        }
+    }
+
+    private void UpdateDeleteCoins()
+    {
+        var toDelete = new List<GameObject>();
+
+        foreach (GameObject coin in _coins)
+        {
+            if (coin.transform.position.y < _destroyY)
+            {
+                toDelete.Add(coin);
+            }
+        }
+
+        foreach(GameObject coin in toDelete)
+        {
+            _coins.Remove(coin);
+            Destroy(coin);
+        }
+    }
+
+
 
     private void UpdateGenerationInitialization()
     {
@@ -168,7 +257,7 @@ public class AlphaLevelGenerator : MonoBehaviour
             InitializeGenerationListV2();
         }
 
-        if(Globals.GameSpeed > TierThreeSpeed)
+        if (Globals.GameSpeed > TierThreeSpeed)
         {
             InitializeGenerationListV3();
         }
@@ -224,7 +313,7 @@ public class AlphaLevelGenerator : MonoBehaviour
     {
         _waitDistanceCovered += Time.deltaTime * Globals.GameSpeed;
 
-        if(InBasic(_itemGenerating))
+        if (InBasic(_itemGenerating))
         {
             if (_waitDistanceCovered > BasicWait)
             {
@@ -233,9 +322,9 @@ public class AlphaLevelGenerator : MonoBehaviour
             return;
         }
 
-        if(InTierTwo(_itemGenerating))
+        if (InTierTwo(_itemGenerating))
         {
-            if(_waitDistanceCovered > BoxWait)
+            if (_waitDistanceCovered > BoxWait)
             {
                 _state = CustomResources.AlphaGeneratorState.Generating;
             }
@@ -315,15 +404,63 @@ public class AlphaLevelGenerator : MonoBehaviour
             case CustomResources.Generation.CircleTwo:
                 StartCoroutine(CircleTwo());
                 break;
+
+            case CustomResources.Generation.CircleBlueOne:
+                StartCoroutine(CircleBlueOne());
+                break;
+
+            case CustomResources.Generation.CircleGreenOne:
+                StartCoroutine(CircleGreenOne());
+                break;
         }
 
         _hasStarted = true;
     }
 
+    private IEnumerator CircleGreenOne()
+    {
+        var position = new Vector2(0, _spawnY);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
+        var enemy = (GameObject)Instantiate(CircleEnemy, position, new Quaternion());
+        _enemies.Add(enemy);
+
+        var circle = enemy.GetComponent<MagicCircleHandler>();
+        circle.Clockwise = (Random.Range(0, 1) > 0.5f) ? true : false;
+
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
+        enemy = (GameObject)Instantiate(GreenEnemy, position, new Quaternion());
+        _enemies.Add(enemy);
+
+        _isGenerating = false;
+        _state = CustomResources.AlphaGeneratorState.Waiting;
+        _hasStarted = false;
+        yield break;
+    }
+
+    private IEnumerator CircleBlueOne()
+    {
+        var position = new Vector2(0, _spawnY);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
+        var enemy = (GameObject)Instantiate(CircleEnemy, position, new Quaternion());
+        _enemies.Add(enemy);
+
+        var circle = enemy.GetComponent<MagicCircleHandler>();
+        circle.Clockwise = (Random.Range(0, 1) > 0.5f) ? true : false;
+
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
+        enemy = (GameObject)Instantiate(BoxEnemy, position, new Quaternion());
+        _enemies.Add(enemy);
+
+        _isGenerating = false;
+        _state = CustomResources.AlphaGeneratorState.Waiting;
+        _hasStarted = false;
+        yield break;
+    }
+
     private IEnumerator CircleOne()
     {
         var position = new Vector2(0, _spawnY);
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         var enemy = (GameObject)Instantiate(CircleEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
@@ -336,7 +473,7 @@ public class AlphaLevelGenerator : MonoBehaviour
     private IEnumerator CircleTwo()
     {
         var position = new Vector2(0, _spawnY);
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         var enemy = (GameObject)Instantiate(CircleEnemy, position, new Quaternion());
 
         var circle = enemy.GetComponent<MagicCircleHandler>();
@@ -360,7 +497,7 @@ public class AlphaLevelGenerator : MonoBehaviour
 
         while (count-- > 0)
         {
-            position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+            position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
             var enemy = (GameObject)Instantiate(BoxEnemy, position, new Quaternion());
 
             _enemies.Add(enemy);
@@ -377,7 +514,7 @@ public class AlphaLevelGenerator : MonoBehaviour
     {
         var position = new Vector2(0, _spawnY);
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         var enemy = (GameObject)Instantiate(BoxEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
@@ -388,15 +525,15 @@ public class AlphaLevelGenerator : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         enemy = (GameObject)Instantiate(GreenEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         enemy = (GameObject)Instantiate(GreenEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         enemy = (GameObject)Instantiate(GreenEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
@@ -412,7 +549,7 @@ public class AlphaLevelGenerator : MonoBehaviour
     {
         var position = new Vector2(0, _spawnY);
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         var enemy = (GameObject)Instantiate(BoxEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
@@ -423,11 +560,11 @@ public class AlphaLevelGenerator : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         enemy = (GameObject)Instantiate(GreenEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         enemy = (GameObject)Instantiate(GreenEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
@@ -442,7 +579,7 @@ public class AlphaLevelGenerator : MonoBehaviour
     {
         var position = new Vector2(0, _spawnY);
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         var enemy = (GameObject)Instantiate(BoxEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 
@@ -453,7 +590,7 @@ public class AlphaLevelGenerator : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        position.x = Random.Range(_leftEdge + 1, _rightEdge - 1);
+        position.x = Random.Range(_leftEdge + 0.5f, _rightEdge - 0.5f);
         enemy = (GameObject)Instantiate(GreenEnemy, position, new Quaternion());
         _enemies.Add(enemy);
 

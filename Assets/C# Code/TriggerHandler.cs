@@ -38,13 +38,26 @@ public class TriggerHandler : MonoBehaviour
     {
         if (other.GetComponent<EnemyIdentifier>())
         {
-            Globals.GameOver = true;
+            var component = other.GetComponent<EnemyIdentifier>();
+            if (component.Done)
+                return;
+
+            component.Done = true;
+            Globals.LivesRemaining--;
+            if (Globals.LivesRemaining == 0)
+                Globals.GameOver = true;
 
             var flicker = other.GetComponent<EnemyIdentifier>().WhiteEffect.GetComponent<TextureFlicker>();
             if (flicker == null)
                 return;
 
             flicker.Activate();
+        }
+
+        if(other.GetComponent<CoinIdentifier>())
+        {
+            var component = other.GetComponent<CoinIdentifier>();
+            component.Handler.InitiateShrink();
         }
     }
 }

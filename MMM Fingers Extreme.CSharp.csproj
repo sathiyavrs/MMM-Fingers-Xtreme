@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>WebGL:20</UnityBuildTarget>
     <UnityVersion>5.2.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,6 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\C# Code\AlphaLevelGenerator.cs" />
+    <Compile Include="Assets\C# Code\CoinEnemyHander.cs" />
+    <Compile Include="Assets\C# Code\CoinHandler.cs" />
+    <Compile Include="Assets\C# Code\CoinIdentifier.cs" />
     <Compile Include="Assets\C# Code\CustomResources.cs" />
     <Compile Include="Assets\C# Code\EnemyIdentifier.cs" />
     <Compile Include="Assets\C# Code\Globals.cs" />

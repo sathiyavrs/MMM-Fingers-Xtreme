@@ -57,7 +57,11 @@
         GreenBlueThree,
 
         CircleOne,
-        CircleTwo
+        CircleTwo,
+
+        CircleBlueOne,
+        
+        CircleGreenOne
     }
 
 }
