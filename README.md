@@ -13,15 +13,13 @@ Do not leave play area. Game Over otherwise.
 
 Also, Coins are added to the build.
 
+Look at Development Notes for more.
+
 Cheers!
 
 # TO PLAY
 
-Run the .exe file or use the WebGL build version.
-
-Note that the WebGL version is built with Unity's preview build. Lots of errors possible.
-
-Look at Development Notes for more.
+Clone the repo and run 'game.exe' file.
 
 # Contributors
 - [sathiyavrs](https://github.com/sathiyavrs) - Me
