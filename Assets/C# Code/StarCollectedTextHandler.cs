@@ -21,6 +21,7 @@ public class StarCollectedTextHandler : MonoBehaviour
         {
             _timeRemaining = TimeToLive;
             Globals.StarCollected = false;
+            
         }
 
         if (_timeRemaining > 0)
@@ -28,8 +29,11 @@ public class StarCollectedTextHandler : MonoBehaviour
             _text.text = "+" + Globals.StarReward + "!";
         }
         else
+        {
             _text.text = "";
-
+            Globals.StarReward = 0;
+        }
+            
         _timeRemaining -= Time.deltaTime * Globals.GlobalRatio;
     }
 }

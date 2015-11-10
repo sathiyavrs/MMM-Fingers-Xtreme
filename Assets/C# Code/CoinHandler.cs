@@ -23,7 +23,7 @@ public class CoinHandler : MonoBehaviour
             Globals.GameScore += PointsToAdd;
             Globals.ScoreIncrement += PointsToAdd;
             Globals.StarCollected = true;
-            Globals.StarReward = PointsToAdd;
+            Globals.StarReward += PointsToAdd;
             Destroy(gameObject);
         }
     }
