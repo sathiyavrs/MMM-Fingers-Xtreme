@@ -21,6 +21,7 @@ For the mouse
 With Leap Motion, 
 * `Move` your hand around to move the player. The entire hand. Not the index finger.
 * Perform a `Grab` to activate slow motion. Release the `Grab` to deactivate slow motion.
+
 ***
 
 ## Instructions
