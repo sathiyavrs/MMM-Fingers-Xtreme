@@ -9,7 +9,7 @@ A reimagining of the popular [MMM Fingers](https://play.google.com/store/apps/de
 * Yellow enemies that move around in **spirals**.
 * **Random** Level Generation.
 * **Coins** that can be collected to increase your score.
-* **Life System** where lives are rewareded to the player based on his performance.
+* **Life System** where lives are rewarded to the player based on his performance.
 
 #### Controls
 Control with `Mouse` or the `Leap Motion Controller`.
