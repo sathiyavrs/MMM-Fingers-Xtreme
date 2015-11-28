@@ -32,3 +32,12 @@ I think just simply not making the game faster as time progresses will give the 
 However, that still doesn't force the player to move. As in, the puzzles are still simple enough not to involve any player movement to solve them.
 
 This is however, due to the randomness of the game, of the levels, and so on at this point. I should be able to solve it when I get back to this and focus on recreating the game.
+
+** 28-11-2015
+One solution, keeping in with the design style implementation so far, is to have blocks that target the player as he moves.
+Will this solve the problem? I think so.
+How?
+The player will have to actively move away from the incoming blocks to stay alive. This forces the player to move. 
+An Additional push towards keeping the player moving is to simply award the player points on movement. 
+
+The above two implementations will almost certainly improve the quality of the game.

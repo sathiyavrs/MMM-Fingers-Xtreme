@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.2.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -80,6 +82,8 @@
     <Compile Include="Assets\C# Code\Enemy\EnemyIdentifier.cs" />
     <Compile Include="Assets\C# Code\Enemy\MagicBoxHandler.cs" />
     <Compile Include="Assets\C# Code\Enemy\MagicCircleHandler.cs" />
+    <Compile Include="Assets\C# Code\Enemy\SimpleTargetHandler.cs" />
+    <Compile Include="Assets\C# Code\Enemy\TargetingSystem.cs" />
     <Compile Include="Assets\C# Code\Enemy\TextureFlicker.cs" />
     <Compile Include="Assets\C# Code\Enemy\VibrationHandler.cs" />
     <Compile Include="Assets\C# Code\Globals.cs" />
@@ -88,6 +92,7 @@
     <Compile Include="Assets\C# Code\Player\PlayerController.cs" />
     <Compile Include="Assets\C# Code\Player\PlayerIdentifier.cs" />
     <Compile Include="Assets\C# Code\Player\PulsationHandler.cs" />
+    <Compile Include="Assets\C# Code\Player\ScoreOnMovement.cs" />
     <Compile Include="Assets\C# Code\Player\SlowMotionBar.cs" />
     <Compile Include="Assets\C# Code\Player\TriggerHandler.cs" />
     <Compile Include="Assets\C# Code\RandomLevelGenerator.cs" />

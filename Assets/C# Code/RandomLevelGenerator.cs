@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class RandomLevelGenerator : MonoBehaviour {
+public class RandomLevelGenerator : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public void Start()
+    {
+
+    }
+
+    public void Update()
+    {
+
+    }
 }
