@@ -1,5 +1,5 @@
 # MMM FINGERS XTREME
-###### Pre-Alpha Source Code
+###### Alpha Source Code
 
 A reimagining of the popular [MMM Fingers](https://play.google.com/store/apps/details?id=com.noodlecake.mmmfingers&hl=en) using ideas from the popular android game [Rotate](https://play.google.com/store/apps/details?id=jamgame.rotatecm&hl=en) android game for Windows. Playable using the Mouse or Leap Motion Controller.
 
@@ -22,7 +22,7 @@ With Leap Motion,
 * `Move` your hand around to move the player. The entire hand. Not the index finger.
 * Perform a `Grab` to activate slow motion. Release the `Grab` to deactivate slow motion.
 
-***
+*** **
 
 ## Instructions
 To play the game,
@@ -34,7 +34,7 @@ To build the Unity Project,
 * Open the folder using Unity.
 
 Note that the game was built using Unity 5.2.1f1. If you use a later version of Unity, you might run into some engine issues.
-***
+*** **
 
 ### Software Used
 * [Unity 5.2.1f1](https://unity3d.com/)

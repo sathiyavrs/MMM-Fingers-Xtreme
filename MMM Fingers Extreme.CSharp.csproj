@@ -51,17 +51,11 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
@@ -77,31 +71,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\C# Code\AlphaLevelGenerator.cs" />
-    <Compile Include="Assets\C# Code\CoinEnemyHander.cs" />
-    <Compile Include="Assets\C# Code\CoinHandler.cs" />
-    <Compile Include="Assets\C# Code\CoinIdentifier.cs" />
+    <Compile Include="Assets\C# Code\Alpha Code\AlphaLevelGenerator.cs" />
+    <Compile Include="Assets\C# Code\Alpha Code\LevelGenerator.cs" />
+    <Compile Include="Assets\C# Code\Coins\CoinEnemyHander.cs" />
+    <Compile Include="Assets\C# Code\Coins\CoinHandler.cs" />
+    <Compile Include="Assets\C# Code\Coins\CoinIdentifier.cs" />
     <Compile Include="Assets\C# Code\CustomResources.cs" />
-    <Compile Include="Assets\C# Code\EnemyIdentifier.cs" />
-    <Compile Include="Assets\C# Code\GameOverTextHander.cs" />
-    <Compile Include="Assets\C# Code\GetReadyTextHandler.cs" />
+    <Compile Include="Assets\C# Code\Enemy\EnemyIdentifier.cs" />
+    <Compile Include="Assets\C# Code\Enemy\MagicBoxHandler.cs" />
+    <Compile Include="Assets\C# Code\Enemy\MagicCircleHandler.cs" />
+    <Compile Include="Assets\C# Code\Enemy\TextureFlicker.cs" />
+    <Compile Include="Assets\C# Code\Enemy\VibrationHandler.cs" />
     <Compile Include="Assets\C# Code\Globals.cs" />
-    <Compile Include="Assets\C# Code\LeapController.cs" />
-    <Compile Include="Assets\C# Code\LevelGenerator.cs" />
-    <Compile Include="Assets\C# Code\LivesIncrementedTextHander.cs" />
-    <Compile Include="Assets\C# Code\LivesRemainingTextHandler.cs" />
-    <Compile Include="Assets\C# Code\MagicBoxHandler.cs" />
-    <Compile Include="Assets\C# Code\MagicCircleHandler.cs" />
-    <Compile Include="Assets\C# Code\MouseController.cs" />
-    <Compile Include="Assets\C# Code\PlayerController.cs" />
-    <Compile Include="Assets\C# Code\PlayerIdentifier.cs" />
-    <Compile Include="Assets\C# Code\PulsationHandler.cs" />
-    <Compile Include="Assets\C# Code\ScoreTextHander.cs" />
-    <Compile Include="Assets\C# Code\SlowMotionBar.cs" />
-    <Compile Include="Assets\C# Code\StarCollectedTextHandler.cs" />
-    <Compile Include="Assets\C# Code\TextureFlicker.cs" />
-    <Compile Include="Assets\C# Code\TriggerHandler.cs" />
-    <Compile Include="Assets\C# Code\VibrationHandler.cs" />
+    <Compile Include="Assets\C# Code\Player\LeapController.cs" />
+    <Compile Include="Assets\C# Code\Player\MouseController.cs" />
+    <Compile Include="Assets\C# Code\Player\PlayerController.cs" />
+    <Compile Include="Assets\C# Code\Player\PlayerIdentifier.cs" />
+    <Compile Include="Assets\C# Code\Player\PulsationHandler.cs" />
+    <Compile Include="Assets\C# Code\Player\SlowMotionBar.cs" />
+    <Compile Include="Assets\C# Code\Player\TriggerHandler.cs" />
+    <Compile Include="Assets\C# Code\RandomLevelGenerator.cs" />
+    <Compile Include="Assets\C# Code\Text Handlers\GameOverTextHander.cs" />
+    <Compile Include="Assets\C# Code\Text Handlers\GetReadyTextHandler.cs" />
+    <Compile Include="Assets\C# Code\Text Handlers\LivesIncrementedTextHander.cs" />
+    <Compile Include="Assets\C# Code\Text Handlers\LivesRemainingTextHandler.cs" />
+    <Compile Include="Assets\C# Code\Text Handlers\ScoreTextHander.cs" />
+    <Compile Include="Assets\C# Code\Text Handlers\StarCollectedTextHandler.cs" />
     <Compile Include="Assets\LeapMotion\DemoResources\Scripts\AerodynamicLeaf.cs" />
     <Compile Include="Assets\LeapMotion\DemoResources\Scripts\BugReporter.cs" />
     <Compile Include="Assets\LeapMotion\DemoResources\Scripts\ChangeMaterialOnGrab.cs" />
